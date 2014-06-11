@@ -24,4 +24,40 @@ Hash["a", 100, "b", 200]             # {"a"=>100, "b"=>200}
 Hash[ [ ["a", 100], ["b", 200] ] ]   # {"a"=>100, "b"=>200}
 Hash["a" => 100, "b" => 200]         # {"a"=>100, "b"=>200}
 
-2)
+2)new, new(obj), new {|hash, key| block } → new_hash
+Returns a new, empty hash. If this hash is subsequently accessed by a key that doesn’t correspond to a hash entry, 
+the value returned depends on the style of new used to create the hash. In the first form, the access returns nil. 
+If obj is specified, this single object will be used for all default values. If a block is specified, it will be called with the hash object and the 
+key, and should return the default value. It is the block’s responsibility to store the value in the hash if required.
+h = Hash.new("Defaul")
+h["a"] = 100
+h["b"] = 200
+h["a"]           # 100
+h["c"]           # "Default"
+
+3)try_convert(obj) → hash or nil
+Try to convert obj into a hash, using to_hash method. Returns converted hash or nil if obj cannot be converted 
+for any reason.
+eg)
+Hash.try_convert({1=>2})   #  {1=>2}
+Hash.try_convert("1=>2")   #  nil
+
+public instance method
+
+1)hsh == other_hash
+Equality two hashes are equal if they each contain the same number of keys and if each key-value pair is equal. 
+eg)
+h1 = { "a" => 1, "c" => 2 }
+h2 = { 7 => 35, "c" => 2, "a" => 1 }
+h3 = { "a" => 1, "c" => 2, 7 => 35 }
+h4 = { "a" => 1, "d" => 2, "f" => 35 }
+h1 == h2   # false
+h2 == h3   # true
+h3 == h4   # false
+
+2)hsh[key] 
+Element retrieves the value object corresponding to the key object. If not found, returns the default value
+eg)
+h = { "a" => 100, "b" => 200 }
+h["a"]   # 100
+h["c"]   # nil
