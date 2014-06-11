@@ -1,0 +1,27 @@
+f=[{'a'=>'03 feb'}, {'b'=>'04 feb'}, {'c'=>'05 feb'}, {nil=>'06 feb'},{nil=>'07 feb'}]
+s=[{'a'=>'10 feb'},{'d'=>'06 feb'},{nil=>'07 feb'}]
+result=f.collect do |f_hash|
+f_hash.collect do |key,value|
+if key == nil
+	 s.select {|s_hash| s_hash.value?(value)  }
+else 
+	 f_hash
+end
+end 
+end
+puts result
+
+
+1)Hash[ key, value, ... ] 
+Hash[ [ [key, value], ... ] ] → new_hash
+Hash[ object ] → new_hash
+Creates a new hash populated with the given objects.
+Similar to the literal { key => value, ... }. In the first form, keys and values occur in pairs, so there must be an even 
+number of arguments.
+The second and third form take a single argument which is either an array of key-value pairs or an object convertible to a hash.
+eg)
+Hash["a", 100, "b", 200]             # {"a"=>100, "b"=>200}
+Hash[ [ ["a", 100], ["b", 200] ] ]   # {"a"=>100, "b"=>200}
+Hash["a" => 100, "b" => 200]         # {"a"=>100, "b"=>200}
+
+2)

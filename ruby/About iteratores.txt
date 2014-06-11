@@ -1,0 +1,49 @@
+collect { |item| block }
+Invokes the given block once for each element of array. Creates a new array containing the values returned by the block.
+If no block is given, an Enumerator is returned instead. Collect returns an array of values that are the RESULT of logic in the block
+eg)
+a = [ "a", "b", "c", "d" ]
+a.collect { |x| x + "!" }        #=> ["a!", "b!", "c!", "d!"]
+
+select {|item| block }
+Select basically iterates through all the elements in your array and performs your logic on each one. If the logic returns TRUE, then it adds the item to a new array which it returns when the iteration is complete. Here’s an example:
+ eg)
+a = [1,2,3,4]
+a.select {|n| n > 2}
+This will return the last two elements in the array i.e 3 and 4. Because 3 and 4 are both greater than 2, which was the logic we placed in the block. I
+
+reject {|item| block } 
+reject will perform the opposite operation of select. Logic which returns FALSE adds the item to the array that is returned. 
+eg)
+a = [1,2,3,4]
+a.reject {|n| n > 2}
+In this example the return value is [1,2] because these elements return false when the condition is tested.
+
+
+inject {|accumulator,item| block } 
+When we think of accumulating, concatenating, or totaling values in an array, then we use inject. The main difference between select and inject is that inject gives you another variable for use in the block. This variable, referred to as the accumulator, is used to store the running total or concatenation of each iteration. The value added to the accumulator is the result of the logic you place in the block. At the end of each iteration, whatever that value is, can be added to the accumulator. 
+eg)
+a = [1,2,3,4]
+a.inject {|acc,n| acc + n}
+This will return 10. The total value of all the elements in our array.The code adds the current element to the accumulator. Remember, you must do something to the accumulator in each iteration. If we had simply placed n in the block the final value of the accumulator would have been 4. Because its the last value in the array and since we did not add it to the accumulator explicitly the accumulator would be replaced in each iteration.
+We can also use a parameter with the inject call to determine what the default value for the accumulator is
+eg)
+a = [1,2,3,4]
+a.inject(10) {|acc,n| acc + n}
+In this example the result is 20 because we assigned the accumulator an initial value of 10.
+
+If we need to return a string or an array from inject, then we will need to treat the accumulator variable that way.
+You can use the default value parameter of inject to do this:
+eg)
+a = [1,2,3,4]
+a.inject([]) {|acc,n| acc << n+n}
+o/p
+[2,4,6,8]
+
+detect(ifnone = nil) { |obj| block } 
+Passes each entry in array to block. Returns the first for which block is not false. If no object matches, calls ifnone and returns its result when it is specified, or returns nil otherwise.
+eg)
+
+a = [1,2,3,4]
+a.detect {|n| n == 3}
+This returns 3. The value we were looking for. If the value had not been found, then the iterator returns nil.
