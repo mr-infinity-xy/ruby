@@ -1,0 +1,62 @@
+Public methods can be called by everyone. No access control is enforced. A class's instance methods are public by default; anyone can call them. The initialize method is always private.
+
+Protected methods can be invoked only by objects of the defining class and its subclasses. Access is kept within the family. However, usage of protected is limited.
+
+Private methods cannot be called with an explicit receiver, the receiver is always self. This means that private methods can be called only in the context of the current object
+
+Access control is determined dynamically, as the program runs, not statically. You will get an access violation only when the code attempts to execute the restricted method. 
+
+class ClassAccess  
+  def m1          # this method is public  
+  end  
+  protected  
+    def m2        # this method is protected  
+    end  
+  private  
+    def m3        # this method is private  
+    end  
+end  
+ca = ClassAccess.new  
+ca.m1  
+#ca.m2  
+#ca.m3  
+If we remove the comments of the last two statements in the above program, we will get an access violation runtime error
+Alternatively, you can set access levels of named methods by listing them as arguments to the access control functions.
+class ClassAccess  
+  def m1       # this method is public  
+  end  
+  public :m1  
+  protected :m2, :m3  
+  private :m4, :m5  
+end  
+Example for 'protected' access control:
+
+class Person  
+  def initialize(age)  
+    @age = age  
+  end  
+  def age  
+    @age  
+  end  
+  def compare_age(c)  
+    if c.age > age  
+      "The other object's age is bigger."  
+    else  
+      "The other object's age is the same or smaller."  
+    end  
+  end  
+  protected :age  
+end  
+  
+c = Person.new(25)  
+m = Person.new(34)  
+puts c.compare_age(m)  
+#puts c.age  
+The output is: 
+The other object's age is bigger.  
+ 
+In the example we compare one Person instance with another Person instance. The comparison, however, depends on the result of a call to the method age. The object doing the comparing i.e c has to ask the other object i.e m to execute its age method. So, age can't be private.
+With age protected rather than private c can ask m to execute age, because object c and m are both instances of the same class. But if we try to call the age method of a Person object when self is anything other than a Person object, the method will fail.
+
+
+In Ruby, public, private and protected apply only to methods. Instance are encapsulated and effectively private, and constants are effectively public. There is no way to make an instance variable accessible from outside a class (except by defining an accessor method). And there is no way to define a constant that is inaccessible to outside use.
