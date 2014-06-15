@@ -1,7 +1,7 @@
 module Animal1
 class Animal
 	def walk
-		put "Animal walk"
+		puts "Animal walk"
 	end
 end 
 end

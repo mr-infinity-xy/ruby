@@ -1,0 +1,15 @@
+Ruby doesn’t support multiple inheritance, the ability to inherit from multiple classes at the same time. Ruby’s inheritance functionality only lets you create simple trees of classes, avoiding the confusion inherent with multiple inheritance systems. However, in some cases it can be useful to share functionality between disparate classes.
+In this situation modules act like a sort of super class and can be included into other classes, extending that class with the methods the module offers. Mixins give you a wonderfully controlled way of adding functionality to classes. 
+eg)
+module UsefulFeatures
+def class_name
+self.class.to_s
+end
+end
+class A
+include UsefulFeatures
+end
+x = A.new
+puts x.class_name
+
+When modules are included in classes it is refered to as mixin

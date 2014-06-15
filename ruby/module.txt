@@ -52,9 +52,34 @@ Using modules we have avoided the name conflict. Both add function in Num.rb and
 
 
 Two file having the same class name can be used together by using the modules. If classes in two files are stored in modules then the name conflict can be avoided and both classes can be used.
+eg)
+Animal.rb file
+module Animal
+class Animal
+	def eat
+		puts "Animal eat"
+	end
+end 
+end
 
+Animal1.rb
+module Animal1
+class Animal
+	def walk
+		puts "Animal walk"
+	end
+end 
+end
 
+Merge.rb
+load "Animal.rb"
+load "Animal1.rb"
+a=Animal::Animal.new
+a.eat
+a1=Animal1::Animal.new
+a1.walk
 
+:: is a name resolution operator to access the class from a module.
 
 
 

@@ -1,7 +1,7 @@
 module Animal
 class Animal
 	def eat
-		put "Animal eat"
+		puts "Animal eat"
 	end
 end 
 end
