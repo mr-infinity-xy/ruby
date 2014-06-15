@@ -16,94 +16,18 @@ String===String # returns false as no condition satisfies
 Ruby’s is dynamic in nature facilitates a style of type system known as duck typing. Duck typing breaks the strong association between an object’s class and its type by defining types based on what an object can do rather than what class it was born from. This changes everything about how we need to think about designing object oriented systems
 Ruby is designed to support this style of objected oriented design. In this issue, we will cover some of the options that are available to us for doing Ruby-style type checking.
 In duck typing, a programmer is only concerned with ensuring that objects behave as demanded of them in a given context, rather than ensuring that they are of a specific type. For example, in a non-duck-typed language, one would create a function that requires that the object passed into it be of type Duck, in order to ensure that that function can then use the object's walk and quack methods. In a duck-typed language, the function would take an object of any type and simply call its walk and quack methods, producing a run-time error if they are not defined.
-
-Type Checking Techniques
-
-There are basically three ways to do type checking in Ruby, two of which are a form of duck typing, and one that is not. Here’s an example of the approach that does not involve duck typing.
-view plaincopy to clipboardprint?
-def read_data(source)  
-  case file  
-  when String  
-    File.read(source)  
-  when IO  
-    source.read  
-  end  
-end  
-Odds are if you’ve been coding Ruby for a while, you’ve either read or written some code that did type checking in this fashion. Ruby’s case statement is very powerful, and makes this sort of logic easy to write. Our read_data() function will work just fine under the common scenarios shown below.
-
-view plaincopy to clipboardprint?
-filename = "foo.txt"  
-read_data(filename) #=> reads the contents of foo.txt by calling   
-                    #   File.read()  
-  
-  
-input = File.open("foo.txt")  
-read_data(input) #=> reads the contents of foo.txt via   
-                 #   the passed in file handle  
-But things begin to fall apart a bit when we decide we’d like read_data() to work with a Tempfile, or with a StringIO object, or perhaps with a mock object we’ve defined in our tests. We have managed to bake into our logic the assumption that the input is always either a descendent of String or a descendent of IO. The purpose of duck typing is to remove these restrictions by focusing only on the messages that are being passed back and forth between objects rather than what class they belong to. The code below demonstraties one way you can do that.
-
-view plaincopy to clipboardprint?
+eg)
 def read_data(source)  
   return source.read if source.respond_to?(:read)  
   return File.read(source.to_str) if source.respond_to?(:to_str)  
   raise ArgumentError  
-end  
-With this modification, our method expects far less of its input. The passed in object simply needs to implement either a meaningful read() or to_str() method. In addition to being backwards compatible with our non-duck-typed code, this new approach gives us access to the full range of things we were missing: StringIO, Tempfile, mock objects for testing, and any user defined objects that are either IO-like or String-like but not a descendent of either.
+end   
+putsread_data("read.txt")   #returns file content of read.txt
+file=File.new("read.txt")
+puts read_data(file)        #returns file content of read.txt    
 
-However, the following contrived example illustrates a final corner case that calls for a bit of extreme duck typing to resolve. Try to spot the problem before reading about how to solve it.
 
-view plaincopy to clipboardprint?
-class FileProxy  
-  def initialize(tempfile)  
-    @tempfile = tempfile  
-  end  
-  
-  def method_missing(id, *args, &block)  
-    @tempfile.send(id, *args, &block)  
-  end  
-end  
-This code implements a proxy which forwards all of its messages to the wrapped tempfile object. However, like many hastily coded proxy objects in Ruby, it does not properly forward respond_to?() calls to the object it wraps. The irb session below illustrates the resulting false negative in our test.
-
-view plaincopy to clipboardprint?
-# Populate our tempfile through the proxy  
-  
->> proxy = FileProxy.new(Tempfile.new("foo.txt"))  
-=> #<FileProxy:0x39461c @tempfile=#<File:/var/f..foo.txt.7910.3>>  
->> proxy << "foo bar baz"  
-=> #<File:/var/folders/sJ/sJo0IkPYFWCY3t5uH+gi0++++TQ/-Tmp-/foo.txt.7910.3>  
->> proxy.rewind  
-=> 0  
-  
-# Unsuccessfully test for presence of read() method  
-  
->> proxy.respond_to?(:read)  
-=> false  
-  
-# But read() works as expected!  
-  
->> proxy.read  
-=> "foo bar baz"  
-This issue will cause read_data() to raise an ArgumentError when passed a FileProxy. In this case, the best solution is to fix respond_to?() so that it works as expected, but since you may often encounter libraries with bad behaviors like this, it’s worth knowing what the duck typing fundamentalist would do in this situation.
-
-view plaincopy to clipboardprint?
-def read_data(source)  
-  begin   
-    return source.read   
-  rescue NoMethodError  
-    # do nothing, just catch the specific error you'd expect if  
-    # read() was not present.  
-  end  
-  
-  begin  
-    File.read(source.to_str)  
-  rescue NoMethodError  
-    raise ArgumentError # now we've run out of valid cases, so let's  
-                        # raise a meaningful error  
-   end  
-end  
-With this final version, we preserve all the benefits of the previous duck typing example, but we can work with objects that have dishonest respond_to?() methods. Unfortunately, the cost for such flexibility includes code that is a bit less pleasant to read and is almost certainly going to run slower than either of our previous implementations. Using the exception system for control flow doesn’t come cheap, even if theoretically this is the most ‘pure’ form of type checking we can do.
-
-While we’ve talked about the benefits and drawbacks of each of these approaches, I haven’t given any direct advice on whether one way of doing type checking is better than the others, simply because there is no simple answer to that question.
+In above example source is send to read_data method. Source is not expected to be of any particular type i.e it is duck typed. Source can be any object that has either read method or a to_str method. If both is not true then it will raise an exception. If source has a method read then it will be performed .If source is a File object the read method of File class would be called. If the source does not have read method then it is checked wheather it have to_s method. If it has then to_s is called on the source to convert it to string and send it as parameter to read method. Hence type of source doesn't matter unless it have to_s or read method. Thus implementing duck typing style where objects behave as demanded of them in a given context, rather than ensuring that they are of a specific type. 
 
 
 Type checking can be done in ruby using a case statement or we can also check type of object using class method.
@@ -122,7 +46,7 @@ puts half(10)      # returns 5
 puts half("abcd")  # returns ab
 puts half(1.2)     # throws exception
 
-In above example the type of the argument provided to the half method is checked by using case statement , if it is of type string then the same string truncated to the half of its length is returned. 
+In above example the type of the argument provided to the half method is checked by using case statement , if it is of type string then the same string truncated to the half of its length is returned. If the argument supplied is of type Fixnum the its divided by 2 and returned. If it is of any other type it raises exception.
 
 
 

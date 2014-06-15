@@ -1,13 +1,10 @@
-def half param
-case param
-when String
-return param[0...param.length/2]
-when Fixnum
-return param/2
-else
- raise TypeError, "Wrong argument type"
-end
-end
-puts half(10)      # returns 5
-puts half("abcd")  # returns ab
-puts half(1.2)     # throws exception
+def read_data(source)  
+  return source.read if source.respond_to?(:read)  
+  return File.read(source.to_str) if source.respond_to?(:to_str)  
+  raise ArgumentError  
+end   
+data=read_data("read.txt")
+puts data
+file=File.new("read.txt")
+data=read_data(file)
+puts data
