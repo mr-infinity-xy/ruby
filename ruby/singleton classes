@@ -1,0 +1,104 @@
+1)Explain singleton classes with examples.
+
+Since all methods are implemented and stored by the class definition, it should be impossible for an object to define its own methods. However Ruby provides a way around this we can define methods that are available only for a specific object. This is done using a Singleton class. Singleton class is a class just defined for a single object.
+Explanation:
+ With each method call, the Ruby interpreter examines the inheritance hierarchy of the receiver in order to find the method that will be executed.
+
+array = Array.new
+aarray.class #  Array
+array.size  #  0
+
+In the last statement above, the size method was called on the array object i.e array object was the receiver of the size message. It’s the class of the receiver where the interpreter will start its search for the size method which in this case is the Array class.
+If the Array class doesn’t contain the size method, the search will continue up the hierarchy until its found. If the method isn’t found at the top of the hierarchy, the search is aborted, and the receiver is sent the method_missing message.
+array -> Array Class -> Object
+Search fro the method will be done as above.
+eg)
+array = Array.new
+def array.size
+  "Hello World!"
+end
+array.size  # => "Hello World!"
+array.class # => Array
+array1 = Array.new
+array2.size  # => 0
+
+The above example creates a singleton method size for the object array. When we call the size on array object it call the singleton method, but ruby should have called the size method of teh Array class as it is the class of the object. . But this doesn't happen due to the singleton classes. The method defined only for array object is stored in a singleton class which is placed ahead of Array class in the hearchy so that the singleton class for the array is searched first for the  method instead of Array class if the  method is not found then array class is searched.
+Singleton class is only added for the single object and calling size on other object will result into calling of size merhod in Array class.
+array -> Singleton class -> ArrayClass -> Object class
+Another way of declaring the singleton class is 
+eg)
+class A
+def print_string 
+puts "Abc"
+end
+end
+a=A.new
+class<<a              #singlton class for object a is created. 
+def print_string 
+ puts "Xyz"
+end
+end
+end 
+a.print_string
+b=A.new
+b.print_string
+
+o/p
+Xyz
+Abc
+
+
+
+2)Explain MetaClass in Ruby with examples
+and 
+How MetaClass is diffrent are diffrent from singleton class.
+
+Meta class, anoymous class, eigenclass is an unofficial way that people refer to singleton class. Meta class and singleton class have no diffrence they are just the term used interchangeable to refer to same things.
+Sometimes people refer singleton class for a class itself as a meta class. As class in ruby is itself a object of Class, it can also have a singleton class of its own. 
+eg)
+class A
+def print_string 
+puts "Abc"
+end
+end
+a=A.new
+class<<A              #singlton class defined for class itself is class is itself a object
+def print_string 
+ puts "Xyz"
+end
+end
+a.print_string
+A.print_string
+
+o/p
+Abc
+Xyz
+
+class << A creates a singleton class which can hold a singleton method for class A as class itself is a object. When singleton class is created for a class instead of object , it is refered to as MetaClass by some people. Though the metaclass term is unofficial
+
+
+
+When use singleton classes instead of normal once
+Singleton class have various benifit. Singleton classes allows us to define singleton methods on a particular object. This allows giving certain special treatment for some special object of the same class. 
+In ruby all methods are instance method internally and no class method exist. Singleton classes are only the way of defining the class method. As class is also the object it can also have a singleton method which is treated as a class method. All the class method are the instance method of singleton class internally.
+
+
+
+Exp methods of singleton class
+Clone method clones the object along with the singleton class.
+Dup method clones the object without the singleton object.
+eg)
+class A
+def print_string 
+puts "Normal class"
+end
+end
+a=A.new
+class<<a            
+def print_string 
+ puts "Singleton class"
+end
+end
+a.dup.print_string   # prints Normal class instead of Singleton class because singleton class is not cloned
+a.clone.print_string  #prints Singleton Class as it clones Singleton class alon with normal class
+
