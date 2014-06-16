@@ -1,0 +1,82 @@
+RubyGems is a package manager for the Ruby programming language that provides a standard format for distributing Ruby programs and libraries in a self-contained format called a "gem", a tool designed to easily manage the installation of gems, and a server for distributing them.
+Before we can install and use gems we need to install the RubyGems library. 
+If we are using Ruby 1.9.*  then we don’t have to worry about installing RubyGems, it’s built in. We can check the version if ruby gems using following commands.
+gem -v
+Even if in windows rails is installed using ruby installer it comes with RubyGems package. After getting RubyGems library we can use it to install whatever gems we please. Once we find the proper gems we can use following syntax
+gem install GEM_NAME
+eg)
+gem install aws-s3
+There are two ways we can use gems. Some are stand-alone ruby programs that we will run to do something. The Rails gem is its example. We run rails new PROJECT_NAME from the command line to generate a new rails project; then, we will use it at other times to generate models, controllers etc. Then there are gems that we will only use from inside projects, like the Amazon S3 gem. 
+
+We can use gems as
+require 'aws/s3' # the S3 gem
+Ruby doesn’t load everything by default, so we can use require to load extra libraries we want to use. 
+
+
+gem search
+The search command lets us to find remote gems by name. We can use regular expression characters in our query.
+$ gem search ^rails
+*** REMOTE GEMS ***
+rails (4.0.0)
+rails-3-settings (0.1.1)
+rails-action-args (0.1.1)
+rails-admin (0.0.0)
+rails-ajax (0.2.0.20130731)
+[...]
+If we see a gem we want more information on we can add the details option. We will want to do this with a small number of gems, though, as listing gems with details requires downloading more files
+$ gem search ^rails$ -d
+
+*** REMOTE GEMS ***
+
+rails (4.0.0)
+    Author: David Heinemeier Hansson
+    Homepage: http://www.rubyonrails.org
+
+    Full-stack web application framework.
+
+gem install
+The install command downloads and installs the gem and any necessary dependencies then builds documentation for the installed gems.
+$ gem install drip
+Fetching: rbtree-0.4.1.gem (100%)
+Building native extensions.  This could take a while...
+Successfully installed rbtree-0.4.1
+Fetching: drip-0.0.2.gem (100%)
+Successfully installed drip-0.0.2
+Parsing documentation for rbtree-0.4.1
+Installing ri documentation for rbtree-0.4.1
+Parsing documentation for drip-0.0.2
+Installing ri documentation for drip-0.0.2
+Done installing documentation for rbtree, drip after 0 seconds
+2 gems installed
+
+
+gem list
+The list command shows your locally installed gems:
+$ gem list
+
+*** LOCAL GEMS ***
+
+bigdecimal (1.2.0)
+drip (0.0.2)
+io-console (0.4.2)
+json (1.7.7)
+minitest (4.3.2)
+psych (2.0.0)
+rake (0.9.6)
+rbtree (0.4.1)
+rdoc (4.0.0)
+test-unit (2.0.0.0)
+
+
+gem uninstall
+The uninstall command removes the gems you have installed.
+$ gem uninstall drip
+Successfully uninstalled drip-0.0.2
+
+gem server
+We can view the documentation for we installed gems in we browser with the server command
+$ gem server
+Server started at http://0.0.0.0:8808
+Server started at http://[::]:8808
+We can access this documentation at http://localhost:8808
+
