@@ -18,37 +18,8 @@ end
 end
 puts result
 =end
-require "delegate"
-class SimpleDelegator < Delegator
-  def initialize(obj)
-    super                  # pass obj to Delegator constructor, required
-    @delegate_sd_obj = obj # store obj for future use
-  end
-  def __getobj__
-    @delegate_sd_obj # return object we are delegating to, required
-  end
+f1,f2,f3,f4 = /(.)(.)(\d+)(\d)/.match("THX1138.").captures
 
-  def __setobj__(obj)
-    @delegate_sd_obj = obj # change delegation object,
-                           # a feature we're providing
-  end
-  def first_element
-  	self[0]
-  end
-  def method_missing(m, *args, &block)
-   super m, *args, &block
-  end
-end
-s = SimpleDelegator.new [1, 2, 3, 4]
-puts "first element = #{s.first_element}"
-dump=s.marshal_dump()
-s.__setobj__ "abcd"
-puts "reverse of string abcd = #{s.reverse}"
-s.marshal_load(dump)
-p s.reverse
-s.freeze 
-#s.__setobj__ [1, 2] cannot change as its frozen
-
-a=[1,2,3,4]
-b=[2,3]
-p a - b
+a= /(abc)+/.match("rabchabcmabcabc")
+a="rabchabcmabcabc".gsub /(abc)/, "xx"
+p a
