@@ -1,0 +1,9 @@
+https://gist.github.com/jcasimir/1210155
+
+render :template => 'welcome/index'
+
+When you redirect you will generate a new request that hits a controller method, render just renders the associated view. You use render in the create because you want to keep the state of the model object if the save fails so that you can render info about its errors. If you tried to redirect to the new_product path you would create a new model object and loose all the form data the user entered and any errors etc 
+
+So the place where redirect_to should be used is when you're doing a HTTP POST request and you don't want the user to resubmit the request when it's done (which may cause duplicate items and other problems).
+
+In Rails, when a model fails to be saved, render is used to redisplay the form with the same entries that was filled previously. This is simpler because if you use redirect, you'll have to pass the form entries either using parameters or session. The side effect is that if you refresh the browser, it will try to resubmit the previous form entries. This is acceptable because because it will probably fail the same way, or if it's successful now, it was what the user should expect in the first place anyway.
