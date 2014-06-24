@@ -1,0 +1,48 @@
+Partials
+
+A partial is just a small view template that is meant to be included in another template, or in a layout. The statement that goes in the controller is:
+We can also use a partial when we want to repeatedly insert the same bit of markup, but using data from a series of objects. For example, consider our listing of podcast episodes. We can use a partial that displays the information for a single podcast. We could simply put that partial in a loop that executes it once for each podcast object, like this:
+eg)
+ render partial:'partial_name'
+It will search for _partial_name.html.erb in views folder
+We could create partial for header and footer and render it in diffrent views.
+
+Template is a general term for the view files. A view template - residing in app/views/ folder - would be rendered within a layout.
+eg)
+ render partial:'template_name'
+It will search for template_name.html.erb in views folder. 
+We can also render an action's Template from another controller. We have to give full path (relative to app/views) of the template to render. For example, if we run code in an UsersController that lives in app/controllers/users, we can render the results of an action to a template in app/views/articles this way:
+render template: "articles/show"
+
+When we want to render the template corresponding to the current controller action in other action. We can directly render the view in action using the template name.
+eg)
+render 'new'
+will render new.html.erb of the current controller. If render 'new' is writen inside action of ArticlesController then it will render app/view/articles/new.html.erb
+
+
+Embedded Ruby
+
+Ruby code in a view template is preceded by <% and followed by %>. The enclosed text is what is called “embedded Ruby,” or ERb.
+
+If the Ruby code is preceded by just <%, then the code is executed, but its output is not inserted into the HTML stream. For example, we might have Ruby code that says something like “if title is not blank”. In real code, this would be:
+
+<% if !title.blank? %>
+For example, if we had a variable named title and we wanted its value to be inserted into the HTML, we will write
+
+<%= title %>
+
+
+
+
+
+Partials are stored in files called "_subformname" ( _error, _subform, _listitem)
+
+render :partial => 'subform'
+render :partial => 'error', :status => 500
+render :partial => 'subform', :locals => 
+                   { :variable => @other_variable }
+render :partial => 'listitem', :collection => @list
+render :partial => 'listitem', :collection => @list, 
+                   :spacer_template => 'list_divider'
+We can pass variables to partial using locals option. We generally render partials inside view. Partial are a sub view that can be reused in many views. Partials are generally rendered inside a view but it can be rendered from the controller 
+render :partial => 'subform'
