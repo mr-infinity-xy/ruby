@@ -1,0 +1,19 @@
+Object-Relational Mapping, commonly referred to as its abbreviation ORM, is a technique that connects the rich objects of an application to tables in a relational database management system. Using ORM, the properties and relationships of the objects in an application can be easily stored and retrieved from a database without writing SQL statements directly and with less overall database access code.
+
+Object-relational mapping in computer software is a programming technique for converting data between incompatible type systems in object-oriented programming languages. This creates, in effect, a "virtual object database" that can be used from within the programming language. There are both free and commercial packages available that perform object-relational mapping, although some programmers opt to create their own ORM tools.
+Object-relational mapping is a programming technique in which a metadata descriptor is used to connect object code to a relational database. Object code is written in object-oriented programming (OOP) languages such as Java, C#, Ruby etc. ORM converts data between type systems that are unable to coexist within relational databases and OOP languages.
+ORM resolves the object code and relational database mismatch with three approaches: bottom up, top-down and meet in the middle. Each approach has its share of benefits and drawbacks. When selecting the best software solution, developers must fully understand the environment and design requirements. 
+
+
+In addition to the data access technique, ORM's benefits also include:
+
+Simplified development because it automates object-to-table and table-to-object conversion, resulting in lower development and maintenance costs
+Less code compared to embedded SQL and handwritten stored procedures
+Transparent object caching in the application tier, improving system performance
+An optimized solution making an application faster and easier to maintain.The key of ORM concerns are that ORM does not perform well and that stored procedures might be a better solution. In addition, ORM dependence may result in poorly-designed databases in certain circumstances.
+Active Record is an ORM Framework for ruby.
+
+Disadvantages
+Disadvantages of O/R mapping tools generally stem from the high level of abstraction obscuring what is actually happening in the implementation code. Developers lose understanding of what the code is actually doing, the developer is more in control using SQL.
+ORM has a tendency to be slow.
+ORM fail to compete against SQL queries for complex queries. Also, heavy reliance on ORM software has been cited as a major factor in producing poorly designed databases
