@@ -1,0 +1,9 @@
+select p.first_name || ' ' || p.last_name player_name,r.sixes, first_team, second_team, winner_team from runs r,players p,  
+(select  matches.id, t.name first_team, t1.name second_team, t2.name winner_team from matches
+inner join teams t on (t.id = matches.team_a_id) 
+inner join teams t1 on (t1.id = matches.team_b_id) 
+inner join teams t2 on (t2.id = matches.result)) matches
+where 
+r.sixes = (Select max(sixes)from runs) and
+matches.id = r.match_id and
+p.id = r.player_id;
